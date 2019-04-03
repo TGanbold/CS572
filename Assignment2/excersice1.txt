@@ -1,0 +1,33 @@
+1.  setImmediate fires at event loop's check phase. So if we need functionality right after
+    I/O callback or poll(incomming connection, data) phase, we use setImmediate instead of setTimeout
+
+2.  process.nextTick's operation goes to nextTickQueue / priorityQueue®.
+    setImmediate's operation goes to check phase's callback queue.
+
+    process.nextTick fires after current operation, regardless of event loop's phase.
+    event loop continue only if priorityQueue® is empty.
+
+    setImmediate wait until it's phase to be fired in event loop.
+
+3.  - fs
+        module that handle all interactions with file system
+    - http
+        module that handle http requests or send http requests.
+    - https
+        similiar to http but handles secure http requests
+    - http2
+        module that handle http/2 protocol
+    - net
+        use for creating stream-based servers(socket connection).
+    - os
+        handles OS related operations
+    - path
+        module that handle file paths
+    - events
+        emit event or handle events
+    - assert
+        used for code testing
+    - buffer
+        used for create Buffer to stream file
+    - child_process
+        user for create seperate process
