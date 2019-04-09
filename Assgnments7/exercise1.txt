@@ -1,0 +1,18 @@
+_id: objectID(),
+BookISBN:'2301'
+Author: 'student1',
+keyword:'mongo book'
+
+borroweddate:,
+borrowers: [
+	{user:student2, 'borrowed_date', return_date:'',contact},
+	{user:student3, 'borrowed_date', return_date:'', contact}]
+
+]
+
+availablecount();
+
+//librarion login
+{ user:'',
+  password:''
+}
