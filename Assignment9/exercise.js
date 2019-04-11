@@ -1,9 +1,8 @@
-//dependencies
 const express = require('express');
 const app = express();
 
 const MongoClient = require('mongodb').MongoClient;
-const client=new MongoClient('mongodb+srv://test:test@cluster0-fospc.gcp.mongodb.net/test?retryWrites=true', { useNewUrlParser: true });  
+const client=new MongoClient('mongodb+srv://test:test@cluster0-fospc.gcp.mongodb.net/test?retryWrites=true'), { useNewUrlParser: true });  
 
 let db;
 let zips;
@@ -13,6 +12,8 @@ client.connect(err => {
   zips = db.collection('zipcodes'); 
 
 });
+
+app.listen(3000,()=>console.log('Listening on 3000'));
 
 // by STATE
 app.get('/query1', function(req,res){   
@@ -24,7 +25,7 @@ app.get('/query1', function(req,res){
     );
 });
 
-// by STATE population and less than 5000
+// by STATE population less than 5000
 app.get('/query2', function(req,res){   
   zips.aggregate([{$match:{pop:{$lt:5000}}}])
   .limit(20)
@@ -36,7 +37,7 @@ app.get('/query2', function(req,res){
     );
 });
 
-//by more than one zip
+// by more than one zip
 app.get('/query3', function(req,res){   
     zips.aggregate([
     {$group:{_id: {"state":"$state","city":"$city"},zip_count:{$sum:1}}}
@@ -50,7 +51,7 @@ app.get('/query3', function(req,res){
     );
 });
 
-// by STATE and least populated city
+// by STATE least populated city
 app.get('/query4', function(req,res){   
   zips.aggregate([
     {$group: {_id: {"state":"$state","city":"$city"},pop:{$sum:"$pop"}}},
@@ -65,4 +66,3 @@ app.get('/query4', function(req,res){
     );
 });
 
-app.listen(3000,()=>console.log('Listening on 3000'));
