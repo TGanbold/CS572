@@ -40,8 +40,9 @@ app.get('/query2', function(req,res){
 // by more than one zip
 app.get('/query3', function(req,res){   
     zips.aggregate([
-    {$group:{_id: {"state":"$state","city":"$city"},zip_count:{$sum:1}}}
-    ,{$match: {zip_count:{$gt:1}}}
+    {$group:{_id: {"state":"$state","city":"$city"}
+    ,zipcount:{$sum:1}}}
+    ,{$match: {zipcount:{$gt:1}}}
     ,{$sort: {state:1,city:1}}])
   .toArray().then(
     result=>  {
@@ -54,9 +55,11 @@ app.get('/query3', function(req,res){
 // by STATE least populated city
 app.get('/query4', function(req,res){   
   zips.aggregate([
-    {$group: {_id: {"state":"$state","city":"$city"},pop:{$sum:"$pop"}}},
+    {$group: {_id: {"state":"$state","city":"$city"}
+    ,pop:{$sum:"$pop"}}},
     {$sort: {state:1,pop:-1}},
-    {$group: {_id: {"state":"$_id.state"},city:{$first: "$_id.city"},pop:{$first:"$pop"}}}
+    {$group: {_id: {"state":"$_id.state"},city:{$first: "$_id.city"}
+     ,pop:{$first:"$pop"}}}
   ])
   .toArray().then(
     result=>  {
